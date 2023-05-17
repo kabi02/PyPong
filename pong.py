@@ -1,6 +1,5 @@
 import pygame
 import random
-import asyncio
 import sys
 from pygame.locals import QUIT, K_UP, K_DOWN, K_w, K_s
 
