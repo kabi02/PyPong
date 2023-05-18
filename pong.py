@@ -55,6 +55,9 @@ while running:
         ball_speed[0] = random.choice([-1, 1]) * ball_speed_x
         ball_speed[1] = random.choice([-1, 1]) * ball_speed_y
         
+        pygame.time.delay(1000)
+        
+        
     # Minimax algorithm
     def minimax_search(state, depth, is_maximizing):
         if depth == 0 or is_terminal(state):
@@ -156,14 +159,12 @@ while running:
     if ball.x <= 0:
         ai_score += 1
         bounce_count = 0
-        print(player_score, ai_score)
         paddle_speed = 5
         reset_game()
     elif ball.x >= WIDTH - ball_radius:
         player_score += 1
         bounce_count = 0
         paddle_speed = 5
-        print(player_score, ai_score)
         reset_game()
         
     # Fill the screen with BG_COL
@@ -178,8 +179,14 @@ while running:
     score_font = pygame.font.Font('freesansbold.ttf', 48)
     player_text = score_font.render(str(player_score), True, PADDLE_COL)
     ai_text = score_font.render(str(ai_score), True, PADDLE_COL)
-    screen.blit(player_text, (10, 10))
-    screen.blit(ai_text, (WIDTH - 40, 10))
+    player_txtrec = player_text.get_rect()
+    player_txtrec.left = 300
+    player_txtrec.top = 10
+    ai_txtrec = ai_text.get_rect()
+    ai_txtrec.right = WIDTH - 300 
+    ai_txtrec.top = 10
+    screen.blit(player_text, player_txtrec)
+    screen.blit(ai_text, ai_txtrec)
 
     # Update the display
     pygame.display.flip()
