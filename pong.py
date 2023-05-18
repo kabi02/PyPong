@@ -4,7 +4,7 @@ from pygame.locals import QUIT, K_UP, K_DOWN, K_w, K_s
 pygame.init()
 
 # Set up the game window
-WIDTH = 900
+WIDTH = 800
 HEIGHT = 400
 FPS = 60
 WHITE = (255, 255, 255)
