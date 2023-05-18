@@ -151,7 +151,6 @@ while running:
         
     # Collision detection with left/right walls
     if ball.x <= 0 or ball.x >= WIDTH - ball_radius:
-        ball_speed[0] = -ball_speed[0]
         bounce_count = 0
         reset_game()
         
