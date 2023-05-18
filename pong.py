@@ -143,7 +143,7 @@ while running:
     if ball.colliderect(player1) or ball.colliderect(player2):
         ball_speed[0] = -ball_speed[0]
         if bounce_count < 20:
-            ball_speed[0] *= 1.03
+            ball_speed[0] *= 1.07
             bounce_count += 1
 
     # Collision detection with top/bottom walls
