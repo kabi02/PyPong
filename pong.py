@@ -7,17 +7,17 @@ pygame.init()
 WIDTH = 800
 HEIGHT = 400
 FPS = 60
-WHITE = (255, 255, 255)
-BLACK = (0, 0, 0)
+PADDLE_COL = (64, 62, 68)
+BG_COL = (253, 231, 180)
 
 screen = pygame.display.set_mode((WIDTH, HEIGHT))
 pygame.display.set_caption("PyPong")
 clock = pygame.time.Clock()
 
 # Set up game variables
-paddle_width = 11
+paddle_width = 12
 paddle_height = 65
-ball_radius = 10
+ball_radius = 13
 ball_speed_x = 6
 ball_speed_y = 5
 paddle_speed = 5
@@ -25,8 +25,8 @@ countdown = 3
 bounce_count = 0
 
 # Create the player paddles
-player1 = pygame.Rect(30, HEIGHT // 2 - paddle_height // 2, paddle_width, paddle_height)
-player2 = pygame.Rect(WIDTH - 30 - paddle_width, HEIGHT // 2 - paddle_height // 2, paddle_width, paddle_height)
+player1 = pygame.Rect(25, HEIGHT // 2 - paddle_height // 2, paddle_width, paddle_height)
+player2 = pygame.Rect(WIDTH - 25 - paddle_width, HEIGHT // 2 - paddle_height // 2, paddle_width, paddle_height)
 
 # Create the ball
 ball = pygame.Rect(WIDTH // 2 - ball_radius // 2, HEIGHT // 2 - ball_radius // 2, ball_radius, ball_radius)
@@ -152,13 +152,13 @@ while running:
         bounce_count = 0
         reset_game()
         
-    # Fill the screen with black
-    screen.fill(BLACK)
+    # Fill the screen with BG_COL
+    screen.fill(BG_COL)
 
     # Draw paddles and ball
-    pygame.draw.rect(screen, WHITE, player1)
-    pygame.draw.rect(screen, WHITE, player2)
-    pygame.draw.ellipse(screen, WHITE, ball)
+    pygame.draw.rect(screen, PADDLE_COL, player1)
+    pygame.draw.rect(screen, PADDLE_COL, player2)
+    pygame.draw.ellipse(screen, PADDLE_COL, ball)
 
     # Update the display
     pygame.display.flip()
