@@ -148,6 +148,7 @@ while running:
         ball_speed[1] = random.choice([ball_speed[1], -ball_speed[1]])
         if bounce_count < 20:
             ball_speed[0] *= 1.07
+            ball_speed[1] *= 1.005
             paddle_speed += 0.1
             bounce_count += 1
 
