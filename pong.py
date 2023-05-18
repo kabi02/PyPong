@@ -6,7 +6,7 @@ from pygame.locals import QUIT, K_UP, K_DOWN, K_w, K_s
 pygame.init()
 
 # Set up the game window
-WIDTH = 800
+WIDTH = 900
 HEIGHT = 400
 FPS = 60
 WHITE = (255, 255, 255)
@@ -19,13 +19,15 @@ clock = pygame.time.Clock()
 paddle_width = 10
 paddle_height = 65
 ball_radius = 10
-ball_speed_x = 7
+ball_speed_x = 6
 ball_speed_y = 5
 paddle_speed = 5
+countdown = 3
+bounce_count = 0
 
 # Create the player paddles
-player1 = pygame.Rect(0, HEIGHT // 2 - paddle_height // 2, paddle_width, paddle_height)
-player2 = pygame.Rect(WIDTH - paddle_width, HEIGHT // 2 - paddle_height // 2, paddle_width, paddle_height)
+player1 = pygame.Rect(30, HEIGHT // 2 - paddle_height // 2, paddle_width, paddle_height)
+player2 = pygame.Rect(WIDTH - 30 - paddle_width, HEIGHT // 2 - paddle_height // 2, paddle_width, paddle_height)
 
 # Create the ball
 ball = pygame.Rect(WIDTH // 2 - ball_radius // 2, HEIGHT // 2 - ball_radius // 2, ball_radius, ball_radius)
@@ -139,6 +141,9 @@ while running:
     # Collision detection with paddles
     if ball.colliderect(player1) or ball.colliderect(player2):
         ball_speed[0] = -ball_speed[0]
+        if bounce_count < 15:
+            ball_speed[0] *= 1.08
+            bounce_count += 1
 
     # Collision detection with top/bottom walls
     if ball.y <= 0 or ball.y >= HEIGHT - ball_radius:
@@ -147,6 +152,7 @@ while running:
     # Collision detection with left/right walls
     if ball.x <= 0 or ball.x >= WIDTH - ball_radius:
         ball_speed[0] = -ball_speed[0]
+        bounce_count = 0
         reset_game()
         
     # Fill the screen with black
