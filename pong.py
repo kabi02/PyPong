@@ -95,9 +95,7 @@ while running:
         
     # AI's possible actions
     def possible_actions(state):
-        actions = []
-        actions.append('up')
-        actions.append('down')
+        actions = ['up', 'down']
         return actions
     
     # Check if ball has reached either players' side
