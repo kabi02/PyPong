@@ -1,6 +1,4 @@
-import pygame
-import random
-import sys
+import pygame, random, sys
 from pygame.locals import QUIT, K_UP, K_DOWN, K_w, K_s
 
 pygame.init()
@@ -118,6 +116,7 @@ while running:
         return player2_y
     
     ai_action = iterative_deepening_search(player2.y, depth)
+    
     if ai_action == 'up' and player2.y > 0:
         player2.y -= ai_speed
     elif ai_action == 'down' and player2.y < HEIGHT - paddle_height:
