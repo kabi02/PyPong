@@ -163,7 +163,7 @@ while running:
     # Update the display
     pygame.display.flip()
     clock.tick(FPS)
-            
+    
 # Exit the game
 pygame.quit()
 sys.exit()
