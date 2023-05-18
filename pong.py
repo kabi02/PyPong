@@ -10,6 +10,7 @@ WIDTH = 900
 HEIGHT = 400
 FPS = 60
 WHITE = (255, 255, 255)
+BLACK = (0, 0, 0)
 
 screen = pygame.display.set_mode((WIDTH, HEIGHT))
 pygame.display.set_caption("PyPong")
@@ -39,7 +40,7 @@ depth = 1
 
 # Game Loop
 running = True
-while running:
+while running:    
     # Functions
     # Resetting the game
     def reset_game():
@@ -142,7 +143,7 @@ while running:
     if ball.colliderect(player1) or ball.colliderect(player2):
         ball_speed[0] = -ball_speed[0]
         if bounce_count < 15:
-            ball_speed[0] *= 1.08
+            ball_speed[0] *= 1.07
             bounce_count += 1
 
     # Collision detection with top/bottom walls
@@ -156,7 +157,7 @@ while running:
         reset_game()
         
     # Fill the screen with black
-    screen.fill((0, 0, 0))
+    screen.fill(BLACK)
 
     # Draw paddles and ball
     pygame.draw.rect(screen, WHITE, player1)
