@@ -173,6 +173,13 @@ while running:
     pygame.draw.rect(screen, PADDLE_COL, player1)
     pygame.draw.rect(screen, PADDLE_COL, player2)
     pygame.draw.ellipse(screen, PADDLE_COL, ball)
+    
+    # Draw texts
+    score_font = pygame.font.Font('freesansbold.ttf', 48)
+    player_text = score_font.render(str(player_score), True, PADDLE_COL)
+    ai_text = score_font.render(str(ai_score), True, PADDLE_COL)
+    screen.blit(player_text, (10, 10))
+    screen.blit(ai_text, (WIDTH - 40, 10))
 
     # Update the display
     pygame.display.flip()
