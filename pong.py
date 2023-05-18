@@ -24,6 +24,9 @@ paddle_speed = 5
 countdown = 3
 bounce_count = 0
 
+player_score = 0
+ai_score = 0
+
 # Create the player paddles
 player1 = pygame.Rect(25, HEIGHT // 2 - paddle_height // 2, paddle_width, paddle_height)
 player2 = pygame.Rect(WIDTH - 25 - paddle_width, HEIGHT // 2 - paddle_height // 2, paddle_width, paddle_height)
@@ -141,6 +144,7 @@ while running:
         ball_speed[0] = -ball_speed[0]
         if bounce_count < 20:
             ball_speed[0] *= 1.07
+            paddle_speed += 0.1
             bounce_count += 1
 
     # Collision detection with top/bottom walls
@@ -148,8 +152,17 @@ while running:
         ball_speed[1] = -ball_speed[1]
         
     # Collision detection with left/right walls
-    if ball.x <= 0 or ball.x >= WIDTH - ball_radius:
+    if ball.x <= 0:
+        ai_score += 1
         bounce_count = 0
+        print(player_score, ai_score)
+        paddle_speed = 5
+        reset_game()
+    elif ball.x >= WIDTH - ball_radius:
+        player_score += 1
+        bounce_count = 0
+        paddle_speed = 5
+        print(player_score, ai_score)
         reset_game()
         
     # Fill the screen with BG_COL
