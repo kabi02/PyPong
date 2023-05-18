@@ -17,7 +17,7 @@ pygame.display.set_caption("PyPong")
 clock = pygame.time.Clock()
 
 # Set up game variables
-paddle_width = 10
+paddle_width = 11
 paddle_height = 65
 ball_radius = 10
 ball_speed_x = 6
