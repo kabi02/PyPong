@@ -7,8 +7,8 @@ pygame.init()
 WIDTH = 800
 HEIGHT = 400
 FPS = 60
-PADDLE_COL = (64, 62, 68)
-BG_COL = (253, 231, 180)
+PADDLE_COL = (252, 252, 252)
+BG_COL = (49, 95, 48)
 
 screen = pygame.display.set_mode((WIDTH, HEIGHT))
 pygame.display.set_caption("PyPong")
@@ -18,7 +18,7 @@ clock = pygame.time.Clock()
 paddle_width = 12
 paddle_height = 65
 ball_radius = 13
-ball_speed_x = 6
+ball_speed_x = 5
 ball_speed_y = 5
 paddle_speed = 5
 countdown = 3
@@ -142,6 +142,7 @@ while running:
     # Collision detection with paddles
     if ball.colliderect(player1) or ball.colliderect(player2):
         ball_speed[0] = -ball_speed[0]
+        ball_speed[1] = random.choice([ball_speed[1], -ball_speed[1]])
         if bounce_count < 20:
             ball_speed[0] *= 1.07
             paddle_speed += 0.1
