@@ -33,15 +33,20 @@ player2 = pygame.Rect(WIDTH - 25 - paddle_width, HEIGHT // 2 - paddle_height // 
 
 # Create the ball
 ball = pygame.Rect(WIDTH // 2 - ball_radius // 2, HEIGHT // 2 - ball_radius // 2, ball_radius, ball_radius)
-ball_speed = [random.choice([-1, 1]) * ball_speed_x, random.choice([-1, 1]) * ball_speed_y]
+ball_speed = [0, 0]
 
 # AI variables
 ai_speed = paddle_speed
 depth = 1
 
+# Countdown
+counter, text = 3, '3'.center(30, ' ')
+pygame.time.set_timer(pygame.USEREVENT, 1000)
+font = pygame.font.SysFont('Consolas', 50)
+
 # Game Loop
 running = True
-while running:    
+while running:
     # Functions
     # Resetting the game
     def reset_game():
@@ -52,12 +57,11 @@ while running:
         # Reset ball position and speed
         ball.x = WIDTH // 2 - ball_radius // 2
         ball.y = HEIGHT // 2 - ball_radius // 2
-        ball_speed[0] = random.choice([-1, 1]) * ball_speed_x
-        ball_speed[1] = random.choice([-1, 1]) * ball_speed_y
-        
-        pygame.time.delay(1000)
-        
-        
+        ball_speed[0] = 0
+        ball_speed[1] = 0
+
+
+
     # Minimax algorithm
     def minimax_search(state, depth, is_maximizing):
         if depth == 0 or is_terminal(state):
@@ -77,7 +81,8 @@ while running:
                 score = minimax_search(new_state, depth - 1, True)
                 best_score = min(best_score, score)
             return best_score
-        
+
+
     # IDS
     def iterative_deepening_search(state, depth_limit):
         best_action = None
@@ -92,23 +97,27 @@ while running:
             if best_action:
                 return best_action
         return best_action
-        
+
+
     # Function for evaluating game state
     def evaluate_state(state):
         player2_y = state
         ball_distance = abs(player2_y - ball.y)
         return -ball_distance
-        
+
+
     # AI's possible actions
     def possible_actions(state):
         actions = ['up', 'down']
         return actions
-    
+
+
     # Check if ball has reached either players' side
     def is_terminal(state):
         # Check if the ball has reached the player's side or the AI's side
         return ball.x <= 0 or ball.x >= WIDTH - ball_radius
-    
+
+
     # Move the player2's y-axis based on the best action
     def perform_action(state, action):
         player2_y = state
@@ -118,26 +127,42 @@ while running:
         elif action == 'down' and player2_y < HEIGHT - paddle_height:
             player2_y += ai_speed
         return player2_y
-    
+
+
     ai_action = iterative_deepening_search(player2.y, depth)
-    
+
     if ai_action == 'up' and player2.y > 0:
         player2.y -= ai_speed
     elif ai_action == 'down' and player2.y < HEIGHT - paddle_height:
         player2.y += ai_speed
-    
-    # Handling exit
-    for event in pygame.event.get():
-        if event.type == QUIT:
+
+    # For Exit and Countdown.
+    for e in pygame.event.get():
+        if e.type == pygame.USEREVENT:
+
+            if counter > 0:
+                ball_speed = [0, 0]
+                text = str(counter).center(30, ' ')
+                counter -= 1
+                ai_speed = 0
+            elif counter == 0:
+                counter -= 1
+                text = 'Start!'.center(30, ' ')
+            elif counter == -1:
+                counter -= 1
+                ai_speed = paddle_speed
+                text = ' '.center(30, ' ')
+                ball_speed = [random.choice([-1, 1]) * ball_speed_x, random.choice([-1, 1]) * ball_speed_y]
+        if e.type == pygame.QUIT:
             running = False
-    
+
     # Move player paddle
     keys = pygame.key.get_pressed()
     if (keys[K_UP] or keys[K_w]) and player1.y > 0:
         player1.y -= paddle_speed
     if (keys[K_DOWN] or keys[K_s]) and player1.y < HEIGHT - paddle_height:
         player1.y += paddle_speed
-        
+
     # Move the ball
     ball.x += ball_speed[0]
     ball.y += ball_speed[1]
@@ -155,27 +180,32 @@ while running:
     # Collision detection with top/bottom walls
     if ball.y <= 0 or ball.y >= HEIGHT - ball_radius:
         ball_speed[1] = -ball_speed[1]
-        
+
     # Collision detection with left/right walls
     if ball.x <= 0:
+        counter = 3
+        text = 'Computer Wins!'.center(30, ' ')
         ai_score += 1
         bounce_count = 0
         paddle_speed = 5
         reset_game()
     elif ball.x >= WIDTH - ball_radius:
+        counter = 3
+        text = 'Player1 Wins!'.center(30, ' ')
         player_score += 1
         bounce_count = 0
         paddle_speed = 5
         reset_game()
-        
+
     # Fill the screen with BG_COL
     screen.fill(BG_COL)
+    screen.blit(font.render(text, True, (255, 255, 255)), (10, 100))
 
     # Draw paddles and ball
     pygame.draw.rect(screen, PADDLE_COL, player1)
     pygame.draw.rect(screen, PADDLE_COL, player2)
     pygame.draw.ellipse(screen, PADDLE_COL, ball)
-    
+
     # Draw texts
     score_font = pygame.font.Font('freesansbold.ttf', 48)
     player_text = score_font.render(str(player_score), True, PADDLE_COL)
@@ -184,15 +214,17 @@ while running:
     player_txtrec.left = 300
     player_txtrec.top = 10
     ai_txtrec = ai_text.get_rect()
-    ai_txtrec.right = WIDTH - 300 
+    ai_txtrec.right = WIDTH - 300
     ai_txtrec.top = 10
     screen.blit(player_text, player_txtrec)
     screen.blit(ai_text, ai_txtrec)
 
+
+
     # Update the display
     pygame.display.flip()
     clock.tick(FPS)
-    
+
 # Exit the game
 pygame.quit()
 sys.exit()
