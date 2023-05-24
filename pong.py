@@ -48,7 +48,31 @@ font = pygame.font.SysFont('Consolas', 50)
 running = True
 while running:
     # Functions
-    # Resetting the game
+    # Finish the game
+    def end_screen(ai_score, player_score):
+        # Check who won
+        if player_score > ai_score:
+            winner = "Player"
+        else:
+            winner = "AI"
+        # Display the game over screen
+        screen.fill(BG_COL)
+        font = pygame.font.Font('freesansbold.ttf', 72)
+        font_small = pygame.font.Font('freesansbold.ttf', 36)
+        text = font.render("{} wins!".format(winner), True, (255, 255, 255))
+        screen.blit(text, (WIDTH // 2 - text.get_width() // 2, (HEIGHT // 2 - text.get_height() // 2) - 50))
+        text = font_small.render("Press any key to exit.", True, (255, 255, 255))
+        screen.blit(text, (WIDTH // 2 - text.get_width() // 2, HEIGHT // 2 + 10))
+        pygame.display.flip()
+        
+        # Wait for the user to press a key or close the window
+        while True:
+            for event in pygame.event.get():
+                if event.type == pygame.QUIT or event.type == pygame.KEYDOWN:
+                    pygame.quit()
+                    sys.exit()
+            
+        # Resetting the game
     def reset_game():
         # Reset player paddle positions
         player1.y = HEIGHT // 2 - paddle_height // 2
@@ -59,8 +83,8 @@ while running:
         ball.y = HEIGHT // 2 - ball_radius // 2
         ball_speed[0] = 0
         ball_speed[1] = 0
-
-
+        
+        pygame.time.delay(1000)
 
     # Minimax algorithm
     def minimax_search(state, depth, is_maximizing):
@@ -117,7 +141,6 @@ while running:
         # Check if the ball has reached the player's side or the AI's side
         return ball.x <= 0 or ball.x >= WIDTH - ball_radius
 
-
     # Move the player2's y-axis based on the best action
     def perform_action(state, action):
         player2_y = state
@@ -127,7 +150,6 @@ while running:
         elif action == 'down' and player2_y < HEIGHT - paddle_height:
             player2_y += ai_speed
         return player2_y
-
 
     ai_action = iterative_deepening_search(player2.y, depth)
 
@@ -184,21 +206,23 @@ while running:
     # Collision detection with left/right walls
     if ball.x <= 0:
         counter = 3
-        text = 'Computer Wins!'.center(30, ' ')
         ai_score += 1
         bounce_count = 0
         paddle_speed = 5
         reset_game()
     elif ball.x >= WIDTH - ball_radius:
         counter = 3
-        text = 'Player1 Wins!'.center(30, ' ')
         player_score += 1
         bounce_count = 0
         paddle_speed = 5
         reset_game()
 
+    if player_score == 11 or ai_score == 11: 
+        end_screen(ai_score, player_score)
+    
     # Fill the screen with BG_COL
     screen.fill(BG_COL)
+    
     screen.blit(font.render(text, True, (255, 255, 255)), (10, 100))
 
     # Draw paddles and ball
@@ -218,8 +242,6 @@ while running:
     ai_txtrec.top = 10
     screen.blit(player_text, player_txtrec)
     screen.blit(ai_text, ai_txtrec)
-
-
 
     # Update the display
     pygame.display.flip()
