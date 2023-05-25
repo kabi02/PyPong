@@ -1,5 +1,5 @@
 # PyPong
-This is a game developed by Kirby & Jon Ray
+This is a recreation of the game Pong developed by Kirby & Jon Ray
 
 ## For A.I
-as required by out A.I subject. we use minimax algo with itirative deepening search.
+As per requirement by our AI subject. We used minimax algorithm with Iterative Deepening Search for the behavior of the AI.
