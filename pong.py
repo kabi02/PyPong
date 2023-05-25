@@ -233,6 +233,8 @@ while running:
             paddle_speed += 0.1
             ai_speed = speed_sel()
             bounce_count += 1
+        else:
+            ai_speed = speed_sel()
 
     # Collision detection with top/bottom walls
     if ball.y <= 0 or ball.y >= HEIGHT - ball_radius:
