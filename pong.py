@@ -1,4 +1,5 @@
 import pygame, random, sys
+import numpy as np
 from pygame.locals import QUIT, K_UP, K_DOWN, K_w, K_s
 
 pygame.init()
@@ -37,13 +38,15 @@ ball_speed = [0, 0]
 
 # AI variables
 ai_speed = paddle_speed
-depth = 1
+depth = 2
+difficulty = 'hard'
 
 # Countdown
 counter, text = 3, '3'.center(30, ' ')
 pygame.time.set_timer(pygame.USEREVENT, 1000)
 font = pygame.font.SysFont('Consolas', 50)
 
+print("difficulty: ", difficulty)    
 # Game Loop
 running = True
 while running:
@@ -158,6 +161,34 @@ while running:
     elif ai_action == 'down' and player2.y < HEIGHT - paddle_height:
         player2.y += ai_speed
 
+    # Determine the ball speed based on difficulty
+    def ball_speed_sel():
+        if difficulty == 'easy':
+            return 1.03, 1.006
+        elif difficulty =='medium':
+            return 1.03, 1.005
+        elif difficulty == 'hard':
+            return 1.065, 1.005
+    
+    # Determine the speed that the ai will use
+    def speed_sel():
+        print("ai speed: ", ai_speed)
+        print("player speed: ", paddle_speed)
+        print("ball speed: ", ball_speed[0], ball_speed[1])        
+        if difficulty == 'easy':
+            return round(random.uniform(4.4, 4.5), 3)
+        
+        elif difficulty == 'medium':
+            return round(random.uniform(4.5, 4.7), 3)    
+        
+        elif difficulty == 'hard':
+            if bounce_count <= 5:
+                return round(random.uniform(5, 5.2), 3)
+            elif bounce_count <= 10 and bounce_count > 5:
+                return round(random.uniform(5.3, 5.5), 3)
+            else:
+                return round(random.uniform(5.8, 5.9), 3)
+        
     # For Exit and Countdown.
     for e in pygame.event.get():
         if e.type == pygame.USEREVENT:
@@ -188,15 +219,19 @@ while running:
     # Move the ball
     ball.x += ball_speed[0]
     ball.y += ball_speed[1]
+    
+    # Assigning the ball's x and y speeds
+    xspeed, yspeed = ball_speed_sel()
 
     # Collision detection with paddles
     if ball.colliderect(player1) or ball.colliderect(player2):
         ball_speed[0] = -ball_speed[0]
         ball_speed[1] = random.choice([ball_speed[1], -ball_speed[1]])
         if bounce_count < 20:
-            ball_speed[0] *= 1.07
-            ball_speed[1] *= 1.005
+            ball_speed[0] *= xspeed
+            ball_speed[1] *= yspeed
             paddle_speed += 0.1
+            ai_speed = speed_sel()
             bounce_count += 1
 
     # Collision detection with top/bottom walls
