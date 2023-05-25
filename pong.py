@@ -171,10 +171,7 @@ while running:
             return 1.065, 1.005
     
     # Determine the speed that the ai will use
-    def speed_sel():
-        print("ai speed: ", ai_speed)
-        print("player speed: ", paddle_speed)
-        print("ball speed: ", ball_speed[0], ball_speed[1])        
+    def speed_sel():    
         if difficulty == 'easy':
             return round(random.uniform(4.4, 4.5), 3)
         
