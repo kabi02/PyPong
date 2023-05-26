@@ -39,14 +39,22 @@ ball_speed = [0, 0]
 # AI variables
 ai_speed = paddle_speed
 depth = 2
-difficulty = 'hard'
+
+# Choose difficulty
+def choose_difficulty():
+    global difficulty
+    while True:
+        difficulty = input("Choose difficulty: Easy, Medium, or Hard? ").lower()
+        if difficulty in ["easy", "medium", "hard"]:
+            return difficulty
+    
+difficulty = choose_difficulty()
 
 # Countdown
 counter, text = 3, '3'.center(30, ' ')
 pygame.time.set_timer(pygame.USEREVENT, 1000)
 font = pygame.font.SysFont('Consolas', 50)
-
-print("difficulty: ", difficulty)    
+  
 # Game Loop
 running = True
 while running:
@@ -171,7 +179,8 @@ while running:
             return 1.065, 1.005
     
     # Determine the speed that the ai will use
-    def speed_sel():    
+    def speed_sel():
+        print("ai_speed:", ai_speed, "player_speed:", paddle_speed)    
         if difficulty == 'easy':
             return round(random.uniform(4.4, 4.5), 3)
         
@@ -189,7 +198,6 @@ while running:
     # For Exit and Countdown.
     for e in pygame.event.get():
         if e.type == pygame.USEREVENT:
-
             if counter > 0:
                 ball_speed = [0, 0]
                 text = str(counter).center(30, ' ')
