@@ -1,6 +1,5 @@
 import pygame, random, sys
-import numpy as np
-from pygame.locals import QUIT, K_UP, K_DOWN, K_w, K_s
+from pygame.locals import K_UP, K_DOWN, K_w, K_s
 
 pygame.init()
 
